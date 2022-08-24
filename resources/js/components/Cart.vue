@@ -31,15 +31,11 @@
     </div>
   </div>
    </div> -->
-  
-  <div class="container">
-     <div v-if="cartItems.length === 0">
-          Empty
-      </div>
-    <div class="row"  v-if="cartItems.length != 0">
 
+  <div class="container">
+    <div v-if="cartItems.length === 0">Empty</div>
+    <div class="row" v-if="cartItems.length != 0">
       <div class="col-md-10">
-      
         <div id="list-example" class="list-group">
           <div
             class="list-group-item list-group-item-action"
@@ -72,11 +68,17 @@
         </div>
       </div>
       <div class="col-md-2">
-         <div class="card">
-              <h4>Checkout</h4>
-              <h6>Total Proucts.{{this.totalQtyNav}}</h6>
-              <h6>Total Amount.{{this.totalAmount}}</h6>
-         </div>
+        <div class="card">
+          <h3>Checkout</h3>
+          <label>Total Proucts:- {{ this.totalQtyNav }}</label>
+          <label>Total Amount: {{ this.totalAmount }}</label>
+          <label>Address:</label>
+          <input type="text" class="formcontrol" />
+          <br />
+       <br />
+       
+          <button class="btn btn-primary btn-block mt-1">Checkout</button>
+        </div>
       </div>
     </div>
   </div>
@@ -84,11 +86,19 @@
 <script>
 export default {
   name: "CartComponent",
-  props: ["toggle", "cart", "inventory", "remove", "someHandler", "loadDataCart","totalQtyNav"],
+  props: [
+    "toggle",
+    "cart",
+    "inventory",
+    "remove",
+    "someHandler",
+    "loadDataCart",
+    "totalQtyNav",
+  ],
   data() {
     return {
       cartItems: [],
-      totalAmount: 0
+      totalAmount: 0,
     };
   },
 
@@ -96,7 +106,6 @@ export default {
   mounted() {
     this.loadData();
     this.getCartInfo();
-   
   },
 
   methods: {
@@ -110,7 +119,7 @@ export default {
         .then((response) => response.json())
         .then((result) => {
           this.cartItems = result;
-           this.totalQty()
+          this.totalQty();
           console.log(result);
         })
         .catch((error) => console.log("error", error));
@@ -127,49 +136,48 @@ export default {
         .catch((error) => console.log("error", error));
     },
     updateCart(item, id, value) {
-      console.log(item, id, value)
+      console.log(item, id, value);
       item.quantity = value;
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
       var raw = JSON.stringify(item);
-      console.log(raw)
+      console.log(raw);
       var requestOptions = {
         method: "PUT",
         headers: myHeaders,
         body: raw,
-       
       };
 
       fetch(`/cart/${id}`, requestOptions)
         .then((response) => response.text())
         .then((result) => {
-          this.loadDataCart()
-          this.totalQty()
+          this.loadDataCart();
+          this.totalQty();
         })
         .catch((error) => console.log("error", error));
     },
-     totalQty(){
-      let products = Object.values(Array.of(this.cartItems)[0])
-      console.log("products",products, this.cartItems)
-      this.totalAmount = products.reduce((total, currentValue, currentIndex, arr )=>{
-        
-         return total + (currentValue.price*currentValue.quantity);
-          
-      },0)
-      console.log(this.totalAmount)
+    totalQty() {
+      let products = Object.values(Array.of(this.cartItems)[0]);
+      console.log("products", products, this.cartItems);
+      this.totalAmount = products.reduce((total, currentValue, currentIndex, arr) => {
+        return total + currentValue.price * currentValue.quantity;
+      }, 0);
+      console.log(this.totalAmount);
     },
     removeCart(item, id) {
       console.log("---------", id, item);
       var requestOptions = {
         method: "DELETE",
-       
       };
 
       fetch(`/cart/${id}`, requestOptions)
         .then((response) => response.json())
-        .then((result) =>  this.cartItems = result)
+        .then((result) => {
+          this.cartItems = result;
+          this.loadDataCart();
+          this.totalQty();
+        })
         .catch((error) => console.log("error", error));
-     
     },
 
     cartTotal() {},
