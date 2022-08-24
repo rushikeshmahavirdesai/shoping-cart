@@ -7,7 +7,8 @@
     :cart="cart"
     :someHandler="someHandlerMethod"
     :remove="removeItem"
-    
+    :loadDataCart="loadData"
+    :totalQtyNav="totalQtyNav"
   ></router-view>
 </template>
 

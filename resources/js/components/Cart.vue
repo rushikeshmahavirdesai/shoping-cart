@@ -33,11 +33,13 @@
    </div> -->
   
   <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-      <div v-if="cartItems.length === 0">
+     <div v-if="cartItems.length === 0">
           Empty
       </div>
+    <div class="row"  v-if="cartItems.length != 0">
+
+      <div class="col-md-10">
+      
         <div id="list-example" class="list-group">
           <div
             class="list-group-item list-group-item-action"
@@ -71,7 +73,9 @@
       </div>
       <div class="col-md-2">
          <div class="card">
-             
+              <h4>Checkout</h4>
+              <h6>Total Proucts.{{this.totalQtyNav}}</h6>
+              <h6>Total Amount.{{this.totalAmount}}</h6>
          </div>
       </div>
     </div>
@@ -80,17 +84,19 @@
 <script>
 export default {
   name: "CartComponent",
-  props: ["toggle", "cart", "inventory", "remove", "someHandler"],
+  props: ["toggle", "cart", "inventory", "remove", "someHandler", "loadDataCart","totalQtyNav"],
   data() {
     return {
       cartItems: [],
+      totalAmount: 0
     };
   },
 
   computed: {},
   mounted() {
     this.loadData();
-    this.getCartInfo()
+    this.getCartInfo();
+   
   },
 
   methods: {
@@ -104,6 +110,7 @@ export default {
         .then((response) => response.json())
         .then((result) => {
           this.cartItems = result;
+           this.totalQty()
           console.log(result);
         })
         .catch((error) => console.log("error", error));
@@ -114,7 +121,7 @@ export default {
         redirect: "follow",
       };
 
-      fetch(`http://127.0.0.1:3333/cart/cartinfo`, requestOptions)
+      fetch(`/cart/cartinfo`, requestOptions)
         .then((response) => response.json())
         .then((result) => console.log(result))
         .catch((error) => console.log("error", error));
@@ -133,10 +140,23 @@ export default {
        
       };
 
-      fetch(`http://127.0.0.1:3333/cart/${id}`, requestOptions)
+      fetch(`/cart/${id}`, requestOptions)
         .then((response) => response.text())
-        .then((result) => console.log(result))
+        .then((result) => {
+          this.loadDataCart()
+          this.totalQty()
+        })
         .catch((error) => console.log("error", error));
+    },
+     totalQty(){
+      let products = Object.values(Array.of(this.cartItems)[0])
+      console.log("products",products, this.cartItems)
+      this.totalAmount = products.reduce((total, currentValue, currentIndex, arr )=>{
+        
+         return total + (currentValue.price*currentValue.quantity);
+          
+      },0)
+      console.log(this.totalAmount)
     },
     removeCart(item, id) {
       console.log("---------", id, item);
@@ -145,7 +165,7 @@ export default {
        
       };
 
-      fetch(`http://127.0.0.1:3333/cart/${id}`, requestOptions)
+      fetch(`/cart/${id}`, requestOptions)
         .then((response) => response.json())
         .then((result) =>  this.cartItems = result)
         .catch((error) => console.log("error", error));
