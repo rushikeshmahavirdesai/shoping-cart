@@ -32,7 +32,8 @@
       "@adonisjs/view",
       "@adonisjs/shield",
       "@japa/preset-adonis/build/adonis-typings",
-      "adonis-shopping-cart"
+      "adonis-shopping-cart",
+      "@adonisjs/lucid"
     ]
   }
 }

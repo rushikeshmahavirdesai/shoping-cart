@@ -27,7 +27,21 @@ Route.post('/', async ({ session, request }) => {
 })
 
 
+import Database from '@ioc:Adonis/Lucid/Database'
 
+Route.post('/checkout', async ({request}) => {
+  let data = request.body()
+  console.log(data.username)
+  await Database
+  .table('checkouts') 
+  .insert({ 
+    username: "jjj", 
+    address: "jj",
+    totalAmount:40,
+    totalProducts:60
+  })
+  return Database.from('checkouts').select('*')
+})
 
 Route
   .post('/cart', 'CartSessionsController.add')
@@ -50,5 +64,7 @@ Route.get("/cart",'CartSessionsController.getCartItems')
 Route.any('*', async ({ view }) => {
   return view.render('index')
 })
+
+
 
 
