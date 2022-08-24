@@ -1,0 +1,21 @@
+
+<html>
+    <head>
+      
+      <style>
+        .completed {
+          text-decoration: line-through
+        }
+      </style>
+     
+    </head>
+    <body>
+       <div id="app">
+        @include('layouts/partials/_navbar')
+        @!section('content')
+       </div>
+       @entryPointScripts('app')
+    </body>
+    
+  </html>
+  

@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.cardd{
+   margin: 10px;
+   border-bottom:1px solid grey;
+   padding: 10px;
+}
+.card-image{
+   width: 100px;
+   height: 100px;
+}
