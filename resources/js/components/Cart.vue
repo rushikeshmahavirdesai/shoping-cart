@@ -33,9 +33,15 @@
    </div> -->
 
   <div class="container">
-    <div v-if="cartItems.length === 0">Empty</div>
-    <div class="row" v-if="cartItems.length != 0">
-      <div class="col-md-10">
+    <center>
+      <div v-if="!showCart" class="custom-badge">
+         <img class="empty-cart" src="https://cdn-icons-png.flaticon.com/512/102/102661.png"/>
+        <h4>Cart Is Empty</h4>
+      </div>
+    </center>
+
+    <div class="row" v-if="showCart">
+      <div class="col-md-8">
         <div id="list-example" class="list-group">
           <div
             class="list-group-item list-group-item-action"
@@ -51,32 +57,49 @@
                 <h6>Qty: {{ item.quantity }}</h6>
                 <h6>Total: $ {{ item.quantity * item.price }}</h6>
                 <!-- @click="remove(key)" -->
-                <button @click="removeCart(item, key)" class="btn btn-danger cart-remove">
-                  &times;
+                <button @click="removeCart(item, key)" class="remove-button">
+                  Remove 
                 </button>
               </div>
               <div class="col-md-3">
-                <input
-                  type="number"
-                  :value="item.quantity"
-                  class="form-control"
-                  @change="(e) => updateCart(item, key, e.target.value)"
-                />
+                <div class="row">
+                  <div class="col-md-2">
+                    <label>Qty</label>
+                  </div>
+                  <div class="col-md-10">
+                    <input
+                      type="number"
+                      :value="item.quantity"
+                      class="form-control"
+                      @change="(e) => updateCart(item, key, e.target.value)"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-2">
+      <div class="col-md-4">
         <div class="card">
           <h3>Checkout</h3>
-          <label>Total Proucts:- {{ this.totalQtyNav }}</label>
-          <label>Total Amount: {{ this.totalAmount }}</label>
-          <label>Address:</label>
-          <input type="text" class="formcontrol" />
+          <ul class="list-group">
+            <li class="list-group-item">Total Proucts:- {{ this.totalQtyNav }}</li>
+            <li class="list-group-item">Total Amount:- {{ this.totalAmount }}</li>
+            <li class="list-group-item">
+               <label>User Name:-</label>
+               <input type="text" class="form-control" />
+            </li>
+            <li class="list-group-item">
+               <label>Address:-</label>
+               <input type="text" class="form-control" />
+            </li>
+          </ul>
+
+          
           <br />
-       <br />
-       
+          <br />
+
           <button class="btn btn-primary btn-block mt-1">Checkout</button>
         </div>
       </div>
@@ -99,6 +122,7 @@ export default {
     return {
       cartItems: [],
       totalAmount: 0,
+      showCart: false,
     };
   },
 
@@ -162,10 +186,16 @@ export default {
       this.totalAmount = products.reduce((total, currentValue, currentIndex, arr) => {
         return total + currentValue.price * currentValue.quantity;
       }, 0);
-      console.log(this.totalAmount);
+      let products2 = Object.values(Array.of(this.cartItems)[0]);
+      console.log("showCart", products2);
+      if (products2.length > 0) {
+        this.showCart = true;
+      } else {
+        this.showCart = false;
+      }
+      console.log(this.showCart);
     },
     removeCart(item, id) {
-      console.log("---------", id, item);
       var requestOptions = {
         method: "DELETE",
       };
@@ -184,3 +214,21 @@ export default {
   },
 };
 </script>
+<style>
+  .remove-button{
+    outline:none;
+    border:none;
+    background:none;
+    color:red;
+    margin-left:-5px;
+  }
+  .custom-badge{
+      color:red;
+      font-weight:bold;
+
+  }
+  .empty-cart{
+    width:150px;
+    height:150px
+  }
+</style>

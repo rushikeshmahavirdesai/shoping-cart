@@ -28,7 +28,7 @@
       <li><a href="#">Page 2</a></li>
       <li><a href="#">Page 3</a></li> -->
        <li> <router-link to="/">Products</router-link> </li>
-       <li> <router-link to="/cart">Cart {{totalQtyNav}}</router-link> </li>
+       <li> <router-link to="/cart">Cart ({{totalQtyNav}})</router-link> </li>
     </ul>
   </div>
 </nav>

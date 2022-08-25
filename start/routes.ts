@@ -27,7 +27,7 @@ Route.post('/', async ({ session, request }) => {
 })
 
 
-import Database from '@ioc:Adonis/Lucid/Database'
+
 
 Route.post('/checkout', 'CheckoutsController.checout')
 

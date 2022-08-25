@@ -1,4 +1,4 @@
-import Env from '@ioc:Adonis/Core/Env'
+
 import { CartConfig } from '@ioc:Adonis/Addons/Cart'
 
 const CartConfig: CartConfig = {
