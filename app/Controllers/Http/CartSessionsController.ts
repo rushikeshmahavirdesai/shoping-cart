@@ -8,6 +8,7 @@ export default class CartSessionsController {
     public async getCartItems({session}:HttpContextContract){
        return session.get('cart.items');
     }
+    //comment
     public async removeCartItem({session}){
         return session.get(`cart.items`)
     }
