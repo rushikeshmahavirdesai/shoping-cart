@@ -57,11 +57,11 @@ const databaseConfig: DatabaseConfig = {
         host: Env.get('PG_HOST'),
         port: Env.get('PG_PORT'),
         user: Env.get('PG_USER'),
-        password: Env.get('PG_PASSWORD', 'root'),
+        password: Env.get('PG_PASSWORD','root'),
         database: Env.get('PG_DB_NAME'),
-        ssl: {
-          rejectUnauthorized: false
-        }
+        // ssl: {
+        //   rejectUnauthorized: false
+        // }
       },
       migrations: {
         naturalSort: true,
