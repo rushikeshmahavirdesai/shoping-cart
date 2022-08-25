@@ -87,7 +87,7 @@ export default {
         redirect: "follow",
       };
 
-      fetch("http://127.0.0.1:3333/cart", requestOptions)
+      fetch("/cart", requestOptions)
         .then((response) => response.json())
         .then((result) => {
           this.allProductsInCart=result.items;
